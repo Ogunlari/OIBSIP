@@ -15,6 +15,31 @@
     --border-color: #E5E7EB;
 }
 
+/* Internship Details Banner */
+.intern-banner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.35rem 1.75rem;
+    padding: 0.6rem 1.25rem;
+    background: linear-gradient(90deg, #4F46E5, #06B6D4);
+    color: #FFFFFF;
+    font-size: 0.8rem;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.01em;
+    text-align: center;
+}
+
+.intern-banner span {
+    white-space: nowrap;
+}
+
+.intern-banner strong {
+    font-weight: 700;
+}
+
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
