@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ogunlari Oladipupo is a frontend developer building accessible, responsive web experiences.">
+    <title>Ogunlari Oladipupo — Frontend Developer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo">AR<span>.</span></a>
+            <button class="nav-toggle" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="nav-links">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <nav class="nav-links" id="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact" class="btn-nav">Let's Talk</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-container">
+                <div class="hero-text reveal">
+                    <p class="eyebrow"><span class="eyebrow-dot"></span> Available for freelance work</p>
+                    <h1>Hi, I'm <span class="gradient-text">Ogunlari Oladipupo</span></h1>
+                    <p class="hero-role">Frontend Developer &amp; UI Enthusiast</p>
+                    <p class="hero-desc">I turn ideas into fast, accessible, and responsive web experiences. I care about clean code, thoughtful design, and the small details that make interfaces feel effortless.</p>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="btn btn-primary">View My Work</a>
+                        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                    </div>
+                    <div class="social-row">
+                        <a href="https://github.com/Ogunlari" target="_blank" rel="noopener noreferrer">GitHub</a>
+                        <a href="https://www.linkedin.com/in/ogunlari-oladipupo-292121327/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                        <a href="mailto:ololadeogunlari@gmail.com">Email</a>
+                    </div>
+                </div>
+
+                <div class="hero-visual reveal">
+                    <div class="avatar-ring">
+                        <div class="avatar" aria-hidden="true">AR</div>
+                    </div>
+                    <span class="float-chip chip-one">HTML</span>
+                    <span class="float-chip chip-two">CSS</span>
+                    <span class="float-chip chip-three">JavaScript</span>
+                    <span class="float-chip chip-four">React</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="section about" id="about">
+            <div class="section-header reveal">
+                <p class="eyebrow">About Me</p>
+                <h2>Design-minded development</h2>
+            </div>
+            <div class="about-grid">
+                <div class="about-copy reveal">
+                    <p>I'm a frontend developer with a passion for building products that are as usable as they are beautiful. My journey started with a simple HTML page and grew into a love for crafting complete, polished interfaces.</p>
+                    <p>Today I work with modern JavaScript, semantic HTML, and responsive CSS to bring designs to life. I enjoy collaborating with designers, solving accessibility challenges, and shipping features that people actually enjoy using.</p>
+                    <p>When I'm not coding, you'll find me exploring new coffee spots, contributing to open source, or sketching out my next side project.</p>
+                </div>
+                <div class="stats-grid reveal">
+                    <div class="stat-card">
+                        <strong>3+</strong>
+                        <span>Years experience</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>20+</strong>
+                        <span>Projects built</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>10+</strong>
+                        <span>Happy clients</span>
+                    </div>
+                    <div class="stat-card">
+                        <strong>100%</strong>
+                        <span>Responsive</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section skills" id="skills">
+            <div class="section-header reveal">
+                <p class="eyebrow">Skills</p>
+                <h2>Tools I work with</h2>
+                <p class="section-subtitle">A practical toolkit for building modern, reliable web interfaces.</p>
+            </div>
+            <div class="skills-grid">
+                <article class="skill-card reveal">
+                    <div class="skill-top">
+                        <span class="skill-icon">HTML</span>
+                        <span class="skill-level">95%</span>
+                    </div>
+                    <h3>HTML5</h3>
+                    <p>Semantic structure, accessibility, and SEO-friendly markup.</p>
+                    <div class="skill-bar"><span style="--level: 95%"></span></div>
+                </article>
+                <article class="skill-card reveal">
+                    <div class="skill-top">
+                        <span class="skill-icon">CSS</span>
+                        <span class="skill-level">90%</span>
+                    </div>
+                    <h3>CSS3</h3>
+                    <p>Flexbox, Grid, animations, and responsive layouts.</p>
+                    <div class="skill-bar"><span style="--level: 90%"></span></div>
+                </article>
+                <article class="skill-card reveal">
+                    <div class="skill-top">
+                        <span class="skill-icon">JS</span>
+                        <span class="skill-level">88%</span>
+                    </div>
+                    <h3>JavaScript</h3>
+                    <p>ES6+, DOM APIs, async patterns, and clean logic.</p>
+                    <div class="skill-bar"><span style="--level: 88%"></span></div>
+                </article>
+                <article class="skill-card reveal">
+                    <div class="skill-top">
+                        <span class="skill-icon">RE</span>
+                        <span class="skill-level">80%</span>
+                    </div>
+                    <h3>React</h3>
+                    <p>Component architecture, hooks, and state management.</p>
+                    <div class="skill-bar"><span style="--level: 80%"></span></div>
+                </article>
+                <article class="skill-card reveal">
+                    <div class="skill-top">
+                        <span class="skill-icon">GIT</span>
+                        <span class="skill-level">85%</span>
+                    </div>
+                    <h3>Git &amp; GitHub</h3>
+                    <p>Version control, branching workflows, and collaboration.</p>
+                    <div class="skill-bar"><span style="--level: 85%"></span></div>
+                </article>
+                <article class="skill-card reveal">
+                    <div class="skill-top">
+                        <span class="skill-icon">UI</span>
+                        <span class="skill-level">75%</span>
+                    </div>
+                    <h3>UI / UX Design</h3>
+                    <p>Wireframes, design systems, and user-first thinking.</p>
+                    <div class="skill-bar"><span style="--level: 75%"></span></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section projects" id="projects">
+            <div class="section-header reveal">
+                <p class="eyebrow">Projects</p>
+                <h2>Selected work</h2>
+                <p class="section-subtitle">A few placeholder projects that show how I approach frontend challenges.</p>
+            </div>
+            <div class="projects-grid">
+                <article class="project-card reveal">
+                    <div class="project-visual visual-one">
+                        <span>WD</span>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-heading">
+                            <h3>Weather Dashboard</h3>
+                            <span class="project-year">2026</span>
+                        </div>
+                        <p>A clean weather app with city search, current conditions, and a five-day forecast powered by a public weather API.</p>
+                        <div class="project-tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                            <span>API</span>
+                        </div>
+                        <a class="project-link" href="https://github.com/yourusername/weather-dashboard" target="_blank" rel="noopener noreferrer">
+                            View on GitHub
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="project-card reveal">
+                    <div class="project-visual visual-two">
+                        <span>TT</span>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-heading">
+                            <h3>Task Tracker</h3>
+                            <span class="project-year">2026</span>
+                        </div>
+                        <p>A lightweight task manager with drag-and-drop columns, local persistence, and a focused, distraction-free interface.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>CSS</span>
+                            <span>LocalStorage</span>
+                        </div>
+                        <a class="project-link" href="https://github.com/Ogunlari/task-tracker" target="_blank" rel="noopener noreferrer">
+                            View on GitHub
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </a>
+                    </div>
+                </article>
+
+                <article class="project-card reveal">
+                    <div class="project-visual visual-three">
+                        <span>TC</span>
+                    </div>
+                    <div class="project-body">
+                        <div class="project-heading">
+                            <h3>Temperature Converter</h3>
+                            <span class="project-year">2026</span>
+                        </div>
+                        <p>An interactive converter for Celsius, Fahrenheit, and Kelvin with strict input validation and absolute-zero handling.</p>
+                        <div class="project-tags">
+                            <span>HTML</span>
+                            <span>CSS</span>
+                            <span>JavaScript</span>
+                        </div>
+                        <a class="project-link" href="https://github.com/Ogunlari/temperature-converter" target="_blank" rel="noopener noreferrer">
+                            View on GitHub
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section contact" id="contact">
+            <div class="contact-card reveal">
+                <p class="eyebrow">Contact</p>
+                <h2>Let's build something great.</h2>
+                <p>Have a project in mind, a role to fill, or just want to say hello? My inbox is always open.</p>
+                <a href="mailto:ololadeogunlari@gmail.com" class="btn btn-primary">Say Hello</a>
+                <div class="contact-links">
+                    <a href="https://github.com/Ogunlari" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    <a href="https://www.linkedin.com/in/ogunlari-oladipupo-292121327/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="mailto:ololadeogunlari@gmail.com">ololadeogunlari@gmail.com</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2026 Ogunlari Oladipupo. Built with HTML, CSS &amp; JavaScript.</p>
+            <a href="#home">Back to top</a>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Convert temperatures between Celsius, Fahrenheit, and Kelvin with strict validation and absolute-zero handling.">
+    <title>Temperature Converter — Celsius, Fahrenheit &amp; Kelvin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="background-glow glow-one" aria-hidden="true"></div>
+    <div class="background-glow glow-two" aria-hidden="true"></div>
+
+    <main class="page">
+        <section class="converter-card" aria-labelledby="page-title">
+            <header class="card-header">
+                <div class="icon-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 14.76V5a2 2 0 0 0-4 0v9.76a4 4 0 1 0 4 0Z"/>
+                        <path d="M12 9v6"/>
+                        <path d="M10 16h4"/>
+                    </svg>
+                </div>
+                <h1 id="page-title">Temperature Converter</h1>
+                <p>Convert between Celsius, Fahrenheit, and Kelvin instantly.</p>
+            </header>
+
+            <form id="converter-form" novalidate>
+                <div class="field">
+                    <label for="temperature">Temperature</label>
+                    <div class="input-wrap">
+                        <input type="number" id="temperature" name="temperature" placeholder="e.g. 25" step="any" inputmode="decimal" autocomplete="off" aria-describedby="input-error" required>
+                        <span class="input-unit" id="input-unit">°C</span>
+                    </div>
+                    <p class="field-error" id="input-error" role="alert"></p>
+                </div>
+
+                <div class="unit-grid">
+                    <div class="field">
+                        <label for="from-unit">From</label>
+                        <select id="from-unit" name="from-unit">
+                            <option value="C" selected>Celsius (°C)</option>
+                            <option value="F">Fahrenheit (°F)</option>
+                            <option value="K">Kelvin (K)</option>
+                        </select>
+                    </div>
+                    <button type="button" class="swap-button" id="swap-units" aria-label="Swap from and to units">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M7 4 3 8l4 4"/>
+                            <path d="M3 8h14"/>
+                            <path d="m17 20 4-4-4-4"/>
+                            <path d="M21 16H7"/>
+                        </svg>
+                    </button>
+                    <div class="field">
+                        <label for="to-unit">To</label>
+                        <select id="to-unit" name="to-unit">
+                            <option value="C">Celsius (°C)</option>
+                            <option value="F" selected>Fahrenheit (°F)</option>
+                            <option value="K">Kelvin (K)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="convert-button">Convert</button>
+            </form>
+
+            <div class="result" id="result" aria-live="polite">
+                <span class="result-label">Result</span>
+                <p class="result-value" id="result-value">—</p>
+                <p class="result-note" id="result-note">Enter a temperature and press convert.</p>
+            </div>
+
+            <p class="reference">Absolute zero: -273.15 °C = -459.67 °F = 0 K</p>
+        </section>
+    </main>
+</body>
+</html>
