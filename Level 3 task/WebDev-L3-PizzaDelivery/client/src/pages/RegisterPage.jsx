@@ -74,11 +74,16 @@ export const RegisterPage = () => {
                     <div className="auth-card">
                         <h2>Registration complete</h2>
                         <p className="muted">{result.message}</p>
-                        {result.devVerificationUrl && (
+                        {result.emailPreviewUrl && (
                             <div className="alert alert--success">
-                                <span>Email is in mock mode. Use this development verification link:</span>
-                                <a className="button button--primary button--small" href={result.devVerificationUrl}>
-                                    Verify email now
+                                <span>Development email sent through Ethereal. Open the preview to click the verification link:</span>
+                                <a
+                                    className="button button--primary button--small"
+                                    href={result.emailPreviewUrl}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                >
+                                    Open test email
                                 </a>
                             </div>
                         )}

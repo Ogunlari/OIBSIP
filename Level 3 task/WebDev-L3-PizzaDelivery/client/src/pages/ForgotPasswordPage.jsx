@@ -36,11 +36,16 @@ export const ForgotPasswordPage = () => {
                         <>
                             <h2>Check your inbox</h2>
                             <p className="muted">{result.message}</p>
-                            {result.devResetUrl && (
+                            {result.emailPreviewUrl && (
                                 <div className="alert alert--success">
-                                    <span>Email is in mock mode. Use this development reset link:</span>
-                                    <a className="button button--primary button--small" href={result.devResetUrl}>
-                                        Reset password now
+                                    <span>Development email sent through Ethereal. Open the preview to click the reset link:</span>
+                                    <a
+                                        className="button button--primary button--small"
+                                        href={result.emailPreviewUrl}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                    >
+                                        Open test email
                                     </a>
                                 </div>
                             )}

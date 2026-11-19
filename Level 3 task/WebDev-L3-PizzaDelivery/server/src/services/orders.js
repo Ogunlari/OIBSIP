@@ -55,13 +55,10 @@ export const createOrderFromCart = async ({ userId, cartItems }) => {
         });
 
         const payment = await createPaymentOrder(order);
-        const paymentOrderId = payment.provider === 'razorpay'
-            ? payment.razorpayOrderId
-            : payment.mockOrderId;
 
         order = await store.orders.update(order.id, {
             paymentProvider: payment.provider,
-            paymentOrderId
+            paymentOrderId: payment.paymentOrderId
         });
 
         return { order, payment };

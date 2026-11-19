@@ -20,6 +20,17 @@ import { hashPassword } from './utils/security.js';
 
 const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const clientDist = path.resolve(currentDir, '../../client/dist');
+const allowedOrigins = env.clientUrl.split(',').map((origin) => origin.trim()).filter(Boolean);
+const localDevOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+
+const corsOrigin = (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || (!env.isProduction && localDevOrigin.test(origin))) {
+        callback(null, true);
+        return;
+    }
+
+    callback(null, false);
+};
 
 const createApp = () => {
     const app = express();
@@ -29,7 +40,7 @@ const createApp = () => {
         crossOriginEmbedderPolicy: false
     }));
     app.use(cors({
-        origin: env.clientUrl.split(',').map((origin) => origin.trim()),
+        origin: corsOrigin,
         credentials: true
     }));
     app.use(express.json({ limit: '100kb' }));
@@ -50,8 +61,8 @@ const createApp = () => {
         response.json({
             status: 'ok',
             storageMode,
-            paymentMode: env.razorpay.enabled ? 'razorpay' : 'mock',
-            emailMode: env.smtp.enabled ? 'smtp' : 'mock',
+            paymentMode: env.paymentMode,
+            emailMode: env.emailMode,
             timestamp: new Date().toISOString()
         });
     });
@@ -92,10 +103,16 @@ const start = async () => {
     initRealtime(server);
 
     server.listen(env.port, () => {
+        const paymentSummary = env.paymentMode === 'razorpay'
+            ? 'Razorpay'
+            : env.paymentMode === 'mock'
+                ? 'DEMO (mock payments, development only)'
+                : 'NOT CONFIGURED - set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET';
+
         console.log(`SliceCraft API running on http://localhost:${env.port}`);
         console.log(`Storage: ${storageMode}`);
-        console.log(`Payments: ${env.razorpay.enabled ? 'Razorpay test/live keys' : 'mock mode'}`);
-        console.log(`Email: ${env.smtp.enabled ? 'SMTP' : 'mock mode'}`);
+        console.log(`Payments: ${paymentSummary}`);
+        console.log(`Email: ${env.emailMode === 'smtp' ? 'SMTP' : 'Ethereal test SMTP'}`);
         console.log(`Admin login: ${env.admin.email}`);
     });
 

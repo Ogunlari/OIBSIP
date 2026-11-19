@@ -97,7 +97,7 @@ const orderSchema = new Schema({
     },
     paymentProvider: {
         type: String,
-        enum: ['mock', 'razorpay', null],
+        enum: ['razorpay', 'mock', null],
         default: null
     },
     paymentOrderId: { type: String, default: null },

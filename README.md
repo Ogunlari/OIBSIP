@@ -50,7 +50,9 @@ Repeat for the other Level 1 folders.
 
 ### Level 3
 
-Prerequisites: Node.js 18+ and npm. MongoDB is optional.
+Prerequisites: Node.js 18+, npm, and a MongoDB database (local MongoDB or a
+free MongoDB Atlas cluster). MongoDB is required — the app has no in-memory
+store.
 
 ```bash
 cd "Level 3 task/WebDev-L3-PizzaDelivery"
@@ -65,10 +67,24 @@ Copy-Item server/.env.example server/.env
 Copy-Item client/.env.example client/.env
 ```
 
-Set at least `JWT_SECRET` in `server/.env`. Leave `MONGODB_URI` empty to use
-the built-in in-memory store; data resets when the server restarts. SMTP and
-Razorpay are optional — without them, emails are logged to the console and
-payments use mock mode.
+Configure `server/.env`:
+
+- `MONGODB_URI` — required, for example `mongodb://127.0.0.1:27017/sliceraft`
+  or an Atlas `mongodb+srv://...` URI.
+- `JWT_SECRET` — a long random string.
+- `RAZORPAY_KEY_ID` / `RAZORPAY_KEY_SECRET` — Razorpay **test mode** keys from
+  Dashboard → Settings → API Keys. In development, if these are omitted,
+  checkout automatically uses a demo payment and marks the order paid without
+  contacting Razorpay. Required in production.
+- `SMTP_HOST`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` — optional in development.
+  If omitted, the server creates a real Ethereal test SMTP account and logs
+  preview URLs (the registration and reset pages link to the preview). SMTP is
+  required in production.
+- `ADMIN_EMAIL`, `ADMIN_PASSWORD`, `ADMIN_ALERT_EMAIL` — credentials for the
+  separate admin login and low-stock alert recipient.
+
+On first start the server seeds the pizza catalog and ingredient inventory. It
+does not create sample users or orders.
 
 Run the app:
 
@@ -93,6 +109,11 @@ Default admin account from `.env.example`:
 
 Change these credentials and `JWT_SECRET` before deploying.
 `.env`, `node_modules`, and `dist` are excluded via `.gitignore`.
+
+Development uses demo payments automatically when Razorpay keys are missing;
+no money is charged. Production has no mock fallback and requires Razorpay keys.
+The server still refuses to start without `MONGODB_URI` (and, in production,
+without SMTP/Razorpay keys).
 
 ## Screenshots
 

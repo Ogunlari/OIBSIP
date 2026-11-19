@@ -7,6 +7,11 @@ dotenv.config({ path: path.resolve(currentDir, '../../.env') });
 
 const nodeEnv = process.env.NODE_ENV || 'development';
 const isProduction = nodeEnv === 'production';
+const mongoUri = (process.env.MONGODB_URI || '').trim();
+
+if (!mongoUri) {
+    throw new Error('MONGODB_URI is required. Set it in server/.env (for example mongodb://127.0.0.1:27017/sliceraft).');
+}
 
 if (isProduction && !process.env.JWT_SECRET) {
     throw new Error('JWT_SECRET is required in production.');
@@ -28,9 +33,21 @@ const booleanFromEnv = (name, fallback = false) => {
 const smtpHost = process.env.SMTP_HOST || '';
 const smtpUser = process.env.SMTP_USER || '';
 const smtpPass = process.env.SMTP_PASS || '';
+const smtpEnabled = Boolean(smtpHost && smtpUser && smtpPass);
 
 const razorpayKeyId = process.env.RAZORPAY_KEY_ID || '';
 const razorpayKeySecret = process.env.RAZORPAY_KEY_SECRET || '';
+const razorpayEnabled = Boolean(razorpayKeyId && razorpayKeySecret);
+const mockPaymentsEnabled = !isProduction && !razorpayEnabled;
+const paymentMode = razorpayEnabled ? 'razorpay' : mockPaymentsEnabled ? 'mock' : 'not_configured';
+
+if (isProduction && !razorpayEnabled) {
+    throw new Error('RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET are required in production.');
+}
+
+if (isProduction && !smtpEnabled) {
+    throw new Error('SMTP_HOST, SMTP_USER, and SMTP_PASS are required in production.');
+}
 
 export const env = {
     nodeEnv,
@@ -39,7 +56,7 @@ export const env = {
     clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
     jwtSecret: process.env.JWT_SECRET || 'dev-only-sliceraft-secret-change-before-production',
     jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
-    mongoUri: (process.env.MONGODB_URI || '').trim(),
+    mongoUri,
     admin: {
         name: process.env.ADMIN_NAME || 'Store Admin',
         email: (process.env.ADMIN_EMAIL || 'admin@sliceraft.local').toLowerCase(),
@@ -53,13 +70,16 @@ export const env = {
         user: smtpUser,
         pass: smtpPass,
         from: process.env.SMTP_FROM || 'SliceCraft <no-reply@sliceraft.local>',
-        enabled: Boolean(smtpHost && smtpUser && smtpPass)
+        enabled: smtpEnabled
     },
+    emailMode: smtpEnabled ? 'smtp' : 'ethereal',
     razorpay: {
         keyId: razorpayKeyId,
         keySecret: razorpayKeySecret,
-        enabled: Boolean(razorpayKeyId && razorpayKeySecret)
+        enabled: razorpayEnabled
     },
+    mockPaymentsEnabled,
+    paymentMode,
     taxRate: 0.05,
     deliveryFee: 49,
     currency: 'INR',

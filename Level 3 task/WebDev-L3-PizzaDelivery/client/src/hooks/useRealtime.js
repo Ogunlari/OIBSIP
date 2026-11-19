@@ -18,7 +18,8 @@ export const useRealtime = (token, handlers = {}) => {
 
         const socket = io(getSocketUrl(), {
             auth: { token },
-            transports: ['websocket', 'polling']
+            transports: ['websocket', 'polling'],
+            autoConnect: false
         });
 
         const listeners = EVENTS.map((event) => {
@@ -32,7 +33,10 @@ export const useRealtime = (token, handlers = {}) => {
             return [event, listener];
         });
 
+        const connectTimer = setTimeout(() => socket.connect(), 100);
+
         return () => {
+            clearTimeout(connectTimer);
             listeners.forEach(([event, listener]) => socket.off(event, listener));
             socket.disconnect();
         };

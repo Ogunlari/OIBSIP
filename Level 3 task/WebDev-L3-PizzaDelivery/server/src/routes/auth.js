@@ -43,12 +43,25 @@ router.post('/register', validate(registerSchema), asyncHandler(async (request, 
     });
 
     const verificationUrl = `${env.clientUrl}/verify-email?token=${verificationToken}`;
-    const mail = await sendVerificationEmail(user, verificationUrl);
 
-    response.status(201).json({
-        message: 'Registration successful. Check your email to verify your account.',
-        devVerificationUrl: mail.mocked && !env.isProduction ? verificationUrl : undefined
-    });
+    try {
+        const mail = await sendVerificationEmail(user, verificationUrl);
+
+        response.status(201).json({
+            message: 'Registration successful. Check your email to verify your account.',
+            emailPreviewUrl: !env.isProduction ? mail.previewUrl || undefined : undefined
+        });
+    } catch (error) {
+        await store.users.deleteById(user.id).catch((cleanupError) => {
+            console.error('Failed to roll back user after email failure:', cleanupError.message);
+        });
+        console.error('Verification email failed:', error.message);
+        throw new AppError(
+            'We could not send the verification email. Please try again.',
+            502,
+            'EMAIL_SEND_FAILED'
+        );
+    }
 }));
 
 router.post('/verify-email', validate(verifyEmailSchema), asyncHandler(async (request, response) => {
@@ -65,7 +78,7 @@ router.post('/verify-email', validate(verifyEmailSchema), asyncHandler(async (re
 
 router.post('/forgot-password', validate(forgotPasswordSchema), asyncHandler(async (request, response) => {
     const user = await store.users.findByEmail(request.body.email);
-    let devResetUrl;
+    let emailPreviewUrl;
 
     if (user) {
         const resetToken = randomToken();
@@ -76,16 +89,23 @@ router.post('/forgot-password', validate(forgotPasswordSchema), asyncHandler(asy
         );
 
         const resetUrl = `${env.clientUrl}/reset-password?token=${resetToken}`;
-        const mail = await sendPasswordResetEmail(user, resetUrl);
 
-        if (mail.mocked && !env.isProduction) {
-            devResetUrl = resetUrl;
+        try {
+            const mail = await sendPasswordResetEmail(user, resetUrl);
+            emailPreviewUrl = !env.isProduction ? mail.previewUrl || undefined : undefined;
+        } catch (error) {
+            console.error('Password reset email failed:', error.message);
+            throw new AppError(
+                'We could not send the password reset email. Please try again.',
+                502,
+                'EMAIL_SEND_FAILED'
+            );
         }
     }
 
     response.json({
         message: 'If an account exists for that email, a password reset link has been sent.',
-        devResetUrl
+        emailPreviewUrl
     });
 }));
 

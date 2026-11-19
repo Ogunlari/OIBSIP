@@ -132,7 +132,7 @@ export const Home = () => {
                         <article className="feature-card">
                             <span className="feature-card__mark">02</span>
                             <h3>Secure checkout</h3>
-                            <p>Razorpay-ready payments with server-side signature verification and a mock mode for local development.</p>
+                            <p>Server-side payment validation before an order is sent to the kitchen.</p>
                         </article>
                         <article className="feature-card">
                             <span className="feature-card__mark">03</span>

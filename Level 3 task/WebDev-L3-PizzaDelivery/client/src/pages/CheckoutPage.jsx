@@ -133,6 +133,17 @@ export const CheckoutPage = () => {
         });
     };
 
+    const completeMockPayment = async (data) => {
+        await apiFetch(`/orders/${data.order.id}/verify-payment`, {
+            method: 'POST',
+            token,
+            body: { mock: true }
+        });
+        clearCart();
+        await refreshMenu().catch(() => {});
+        navigate(`/orders/${data.order.id}?success=1`, { replace: true });
+    };
+
     const handlePlaceOrder = async (event) => {
         event.preventDefault();
 
@@ -165,18 +176,10 @@ export const CheckoutPage = () => {
             });
 
             if (data.payment.provider === 'mock') {
-                await apiFetch(`/orders/${data.order.id}/verify-payment`, {
-                    method: 'POST',
-                    token,
-                    body: { mock: true }
-                });
-                clearCart();
-                await refreshMenu().catch(() => {});
-                navigate(`/orders/${data.order.id}?success=1`, { replace: true });
-                return;
+                await completeMockPayment(data);
+            } else {
+                await openRazorpay(data);
             }
-
-            await openRazorpay(data);
         } catch (requestError) {
             setError(requestError.message);
             if (requestError.code === 'INSUFFICIENT_STOCK') {
@@ -247,13 +250,19 @@ export const CheckoutPage = () => {
                                         {paymentMode === 'razorpay'
                                             ? 'Razorpay secure checkout'
                                             : paymentMode === 'mock'
-                                                ? 'Development mock payment'
-                                                : 'Secure checkout'}
+                                                ? 'Demo payment (development)'
+                                                : paymentMode === 'not_configured'
+                                                    ? 'Payment not configured'
+                                                    : 'Checking payment provider...'}
                                     </strong>
                                     <span>
-                                        {paymentMode === 'mock'
-                                            ? 'The API is running without Razorpay keys, so this order will be marked paid instantly.'
-                                            : 'You will be redirected to the Razorpay checkout to complete payment.'}
+                                        {paymentMode === 'razorpay'
+                                            ? 'You will be redirected to the Razorpay checkout to complete payment.'
+                                            : paymentMode === 'mock'
+                                                ? 'No Razorpay keys are set, so this order will be marked paid with a demo payment. No money will be charged.'
+                                                : paymentMode === 'not_configured'
+                                                    ? 'Set RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET in server/.env to enable checkout.'
+                                                    : 'Confirming the payment provider before checkout.'}
                                     </span>
                                 </div>
                             </div>
@@ -279,7 +288,7 @@ export const CheckoutPage = () => {
                             <strong>{currency(total, pricing.currency)}</strong>
                         </div>
                         <button type="submit" className="button button--primary" disabled={placing}>
-                            {placing ? 'Processing...' : 'Place order'}
+                            {placing ? 'Processing...' : paymentMode === 'mock' ? 'Place order (demo payment)' : 'Place order'}
                         </button>
                         <p className="summary-card__note">
                             Stock is reserved when the order is created and released automatically if payment is not completed.

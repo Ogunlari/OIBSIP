@@ -47,6 +47,9 @@ export const users = {
         });
         return document.toObject();
     },
+    async deleteById(id) {
+        await User.deleteOne({ id });
+    },
     async verifyByToken(tokenHash, now) {
         return User.findOneAndUpdate(
             {

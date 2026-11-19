@@ -4,11 +4,22 @@ import { store } from './db/index.js';
 import { verifyToken } from './utils/security.js';
 
 let io = null;
+const allowedOrigins = env.clientUrl.split(',').map((origin) => origin.trim()).filter(Boolean);
+const localDevOrigin = /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
+
+const corsOrigin = (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin) || (!env.isProduction && localDevOrigin.test(origin))) {
+        callback(null, true);
+        return;
+    }
+
+    callback(null, false);
+};
 
 export const initRealtime = (httpServer) => {
     io = new Server(httpServer, {
         cors: {
-            origin: env.clientUrl.split(',').map((origin) => origin.trim()),
+            origin: corsOrigin,
             credentials: true
         }
     });

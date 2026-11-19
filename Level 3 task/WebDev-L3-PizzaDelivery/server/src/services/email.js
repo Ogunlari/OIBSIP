@@ -14,46 +14,79 @@ const escapeHtml = (value) => String(value)
     .replaceAll('"', '&quot;')
     .replaceAll("'", '&#039;');
 
-let transporter = null;
+let transportPromise = null;
 
-const getTransporter = () => {
-    if (!env.smtp.enabled) {
-        return null;
+const getTransport = () => {
+    if (transportPromise) {
+        return transportPromise;
     }
 
-    if (!transporter) {
-        transporter = nodemailer.createTransport({
-            host: env.smtp.host,
-            port: env.smtp.port,
-            secure: env.smtp.secure,
+    transportPromise = (async () => {
+        if (env.smtp.enabled) {
+            const transporter = nodemailer.createTransport({
+                host: env.smtp.host,
+                port: env.smtp.port,
+                secure: env.smtp.secure,
+                auth: {
+                    user: env.smtp.user,
+                    pass: env.smtp.pass
+                }
+            });
+
+            return {
+                transporter,
+                mode: 'smtp',
+                from: env.smtp.from
+            };
+        }
+
+        const testAccount = await nodemailer.createTestAccount();
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.ethereal.email',
+            port: 587,
+            secure: false,
             auth: {
-                user: env.smtp.user,
-                pass: env.smtp.pass
+                user: testAccount.user,
+                pass: testAccount.pass
+            },
+            tls: {
+                rejectUnauthorized: false
             }
         });
-    }
 
-    return transporter;
+        console.log(`[email] Using Ethereal test SMTP account: ${testAccount.user}`);
+        console.log('[email] View delivered messages at https://ethereal.email/messages');
+        console.warn('[email] Ethereal is a development-only test inbox; configure SMTP_* for verified delivery.');
+
+        return {
+            transporter,
+            mode: 'ethereal',
+            from: `SliceCraft <${testAccount.user}>`
+        };
+    })().catch((error) => {
+        transportPromise = null;
+        throw error;
+    });
+
+    return transportPromise;
 };
 
 const sendMail = async ({ to, subject, text, html }) => {
-    const mailer = getTransporter();
-
-    if (!mailer) {
-        console.log(`[email:mock] To: ${to} | Subject: ${subject}`);
-        console.log(text);
-        return { mocked: true };
-    }
-
-    await mailer.sendMail({
-        from: env.smtp.from,
+    const { transporter, mode, from } = await getTransport();
+    const info = await transporter.sendMail({
+        from,
         to,
         subject,
         text,
         html
     });
 
-    return { mocked: false };
+    const previewUrl = mode === 'ethereal' ? nodemailer.getTestMessageUrl(info) : null;
+    if (previewUrl) {
+        console.log(`[email] Preview delivered message: ${previewUrl}`);
+    }
+
+    return { mode, previewUrl };
 };
 
 export const sendVerificationEmail = async (user, verificationUrl) => {

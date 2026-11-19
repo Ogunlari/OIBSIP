@@ -33,8 +33,8 @@ export const shortOrderId = (id) => (id ? id.slice(0, 8).toUpperCase() : '');
 export const STATUS_LABELS = {
     PENDING_PAYMENT: 'Awaiting payment',
     RECEIVED: 'Order received',
-    IN_KITCHEN: 'In the kitchen',
-    OUT_FOR_DELIVERY: 'Out for delivery',
+    IN_KITCHEN: 'In kitchen',
+    OUT_FOR_DELIVERY: 'Sent to delivery',
     DELIVERED: 'Delivered',
     CANCELLED: 'Cancelled'
 };
@@ -55,6 +55,6 @@ export const NEXT_STATUS = {
 
 export const NEXT_STATUS_LABELS = {
     IN_KITCHEN: 'Start kitchen',
-    OUT_FOR_DELIVERY: 'Send out',
+    OUT_FOR_DELIVERY: 'Send to delivery',
     DELIVERED: 'Mark delivered'
 };

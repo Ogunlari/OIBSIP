@@ -61,9 +61,9 @@ export const checkoutSchema = z.object({
 });
 
 export const verifyPaymentSchema = z.object({
-    mock: z.boolean().optional(),
-    razorpayPaymentId: z.string().optional(),
-    razorpaySignature: z.string().optional()
+    mock: z.literal(true).optional(),
+    razorpayPaymentId: z.string().min(1, 'Razorpay payment ID is required.').optional(),
+    razorpaySignature: z.string().min(1, 'Razorpay signature is required.').optional()
 });
 
 export const inventoryUpdateSchema = z.object({
